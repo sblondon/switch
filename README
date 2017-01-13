@@ -1,3 +1,17 @@
 Experiment of switch-case in python3
 
+There are several implementations in pypi.python.org, probably better than this experiment.
+
+
+Usage:
+```python
+import switch
+
+s = switch.Switch()
+s.add_case("spam", f)
+s.add_case(12, f)
+s.add_default_case(f)
+
+s.match('B')
+```
 
