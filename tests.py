@@ -4,6 +4,7 @@ import unittest.mock
 import switch
 
 class Test(unittest.TestCase):
+
     def test_basic(self):
         self.a = 0
         def f():
@@ -52,6 +53,29 @@ class Test(unittest.TestCase):
         s.match('a')
 
         self.assertEqual("FGH", self.a)
+
+    def test_several_cases_at_same_time(self):
+        self.a = 0
+        def f():
+            self.a += 1
+        s = switch.Switch()
+        s.add_cases([24, 42], f)
+
+        s.match(24)
+        s.match(42)
+
+        self.assertEqual(2, self.a)
+
+    def test_several_cases_at_same_time_with_break_disabled(self):
+        self.a = 0
+        def f():
+            self.a += 1
+        s = switch.Switch()
+        s.add_cases([24, 42], f, False)
+
+        s.match(24)
+
+        self.assertEqual(2, self.a)
 
 
 if __name__ == '__main__':
