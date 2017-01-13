@@ -32,6 +32,26 @@ class Test(unittest.TestCase):
 
         self.assertEqual(1, self.a)
 
+    def test_break_or_continue(self):
+        self.a = ""
+        def f():
+            self.a += "F"
+        def g():
+            self.a += "G"
+        def h():
+            self.a += "H"
+        def i():
+            self.fail("Function i() should not be called.")
+
+        s = switch.Switch()
+        s.add_case("a", f, False)
+        s.add_case("b", g, False)
+        s.add_case("c", h)
+        s.add_case("d", i)
+        
+        s.match('a')
+
+        self.assertEqual("FGH", self.a)
 
 
 if __name__ == '__main__':
