@@ -4,7 +4,7 @@ class NoMatchingCase(Exception):
     pass
 
 class Switch:
-    def __init__(self, value=None):
+    def __init__(self, value):
         self._d = collections.OrderedDict()
         self._default_case = None
         self._value = value
@@ -45,3 +45,4 @@ class Switch:
 
     def __exit__(self, type, value, traceback):
         self.match(self._value)
+

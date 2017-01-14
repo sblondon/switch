@@ -9,15 +9,14 @@ class Test(unittest.TestCase):
         self.a = 0
         def f():
             self.a = 1
-        s = switch.Switch()
-        s.add_case("a", f)
-        
-        s.match('a')
 
+        with switch.Switch("a") as s:
+            s.add_case("a", f)
+        
         self.assertEqual(1, self.a)
 
     def test_no_case_found(self):
-        s = switch.Switch()
+        s = switch.Switch("a")
         
         with self.assertRaises(switch.NoMatchingCase):
             s.match('a')
@@ -26,10 +25,9 @@ class Test(unittest.TestCase):
         self.a = 0
         def f():
             self.a = 1
-        s = switch.Switch()
-        s.add_default_case(f)
         
-        s.match('B')
+        with switch.Switch("B") as s:
+            s.add_default_case(f)
 
         self.assertEqual(1, self.a)
 
@@ -44,36 +42,21 @@ class Test(unittest.TestCase):
         def i():
             self.fail("Function i() should not be called.")
 
-        s = switch.Switch()
-        s.add_case("a", f, False)
-        s.add_case("b", g, False)
-        s.add_case("c", h)
-        s.add_case("d", i)
-        
-        s.match('a')
+        with switch.Switch("a") as s:
+            s.add_case("a", f, False)
+            s.add_case("b", g, False)
+            s.add_case("c", h)
+            s.add_case("d", i)
 
         self.assertEqual("FGH", self.a)
-
-    def test_several_cases_at_same_time(self):
-        self.a = 0
-        def f():
-            self.a += 1
-        s = switch.Switch()
-        s.add_cases([24, 42], f)
-
-        s.match(24)
-        s.match(42)
-
-        self.assertEqual(2, self.a)
 
     def test_several_cases_at_same_time_with_break_disabled(self):
         self.a = 0
         def f():
             self.a += 1
-        s = switch.Switch()
-        s.add_cases([24, 42], f, False)
 
-        s.match(24)
+        with switch.Switch(24) as s:
+            s.add_cases([24, 42], f, False)
 
         self.assertEqual(2, self.a)
 
