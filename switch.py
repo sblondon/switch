@@ -1,6 +1,6 @@
 import collections
 
-class NoMatchingCase(Exception):
+class NoMatchingCases(Exception):
     pass
 
 class _CaseDoesNotMatch(Exception):
@@ -50,7 +50,7 @@ class Switch:
             if self._default_case:
                 self._default_case()
             elif not self._has_matched:
-                raise NoMatchingCase()
+                raise NoMatchingCases()
         else:
             self._exec_match(value)
 
