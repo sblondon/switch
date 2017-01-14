@@ -11,17 +11,9 @@ class _Case:
         self._switch = switch
         self._case_value = value
 
-    def __enter__(self):
-        if not self.is_matching():
-            raise _CaseDoesNotMatch()
-        return self
-
-    def __exit__(self, type, value, traceback):
-        pass
-        #self._match(self._value)
-
     def is_matching(self):
         return self._switch._value == self._case_value
+
 
 class Switch:
     def __init__(self, value):
@@ -29,14 +21,27 @@ class Switch:
         self._default_case = None
         self._value = value
         self._has_matched = False
+        self._continuation = True
+        self._break_order = False
 
     def add_case(self, expression, executable, end_break=True):
         self._d[expression] = {"executable": executable, "break": end_break}
 
     def case(self, expression):
+        if self._break_order:
+            return []
         c = _Case(self, expression) #[1] if expression == self._value else []
         self._has_matched = self._has_matched or c.is_matching()
-        return c
+        return [True] if c.is_matching() or self._continuation else []
+
+    def _break(self):
+        self._break_order = True
+        self._continuation = False
+
+    def default_case(self):
+        if not self._has_matched:
+            self._has_matched = True
+        return [True] if self._has_matched else []
 
     def add_cases(self, expressions, executable, end_break=True):
         for expression in expressions:
