@@ -3,14 +3,40 @@ import collections
 class NoMatchingCase(Exception):
     pass
 
+class _CaseDoesNotMatch(Exception):
+    pass
+
+class _Case:
+    def __init__(self, switch, value):
+        self._switch = switch
+        self._case_value = value
+
+    def __enter__(self):
+        if not self.is_matching():
+            raise _CaseDoesNotMatch()
+        return self
+
+    def __exit__(self, type, value, traceback):
+        pass
+        #self._match(self._value)
+
+    def is_matching(self):
+        return self._switch._value == self._case_value
+
 class Switch:
     def __init__(self, value):
         self._d = collections.OrderedDict()
         self._default_case = None
         self._value = value
+        self._has_matched = False
 
     def add_case(self, expression, executable, end_break=True):
         self._d[expression] = {"executable": executable, "break": end_break}
+
+    def case(self, expression):
+        c = _Case(self, expression) #[1] if expression == self._value else []
+        self._has_matched = self._has_matched or c.is_matching()
+        return c
 
     def add_cases(self, expressions, executable, end_break=True):
         for expression in expressions:
@@ -23,7 +49,7 @@ class Switch:
         if value not in self._d:
             if self._default_case:
                 self._default_case()
-            else:
+            elif not self._has_matched:
                 raise NoMatchingCase()
         else:
             self._exec_match(value)

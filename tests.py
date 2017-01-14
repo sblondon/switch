@@ -59,14 +59,14 @@ class Test(unittest.TestCase):
 
         self.assertEqual(2, self.a)
 
-    def test_use_switch_in_context_manager(self):
+    def test_use_context_managers_for_case(self):
         self.a = 0
-        def f():
-            self.a = 1
         with switch.Switch("a") as s:
-            s.add_case("a", f)
+            with s.case("a"):
+                self.a = 1
 
-        self.assertEqual(1, self.a)
+            self.assertEqual(1, self.a)
+
 
 
 if __name__ == '__main__':
