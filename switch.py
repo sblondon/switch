@@ -19,7 +19,7 @@ class Switch:
     def add_default_case(self, executable):
         self._default_case = executable
 
-    def match(self, value):
+    def _match(self, value):
         if value not in self._d:
             if self._default_case:
                 self._default_case()
@@ -44,5 +44,5 @@ class Switch:
         return self
 
     def __exit__(self, type, value, traceback):
-        self.match(self._value)
+        self._match(self._value)
 

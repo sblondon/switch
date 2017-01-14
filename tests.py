@@ -16,10 +16,9 @@ class Test(unittest.TestCase):
         self.assertEqual(1, self.a)
 
     def test_no_case_found(self):
-        s = switch.Switch("a")
-        
         with self.assertRaises(switch.NoMatchingCase):
-            s.match('a')
+            with switch.Switch("a") as s:
+                pass
 
     def test_default_case(self):
         self.a = 0
