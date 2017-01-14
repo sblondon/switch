@@ -45,11 +45,10 @@ class Test(unittest.TestCase):
 
     def test_several_cases_at_same_time_with_break_disabled(self):
         self.a = 0
-        def f():
-            self.a += 1
 
         with switch.Switch(24) as s:
-            s.add_cases([24, 42], f, False)
+            for c in s.each_cases_in([24, 42]):
+                self.a += 1
 
         self.assertEqual(2, self.a)
 

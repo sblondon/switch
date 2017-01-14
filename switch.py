@@ -34,6 +34,9 @@ class Switch:
         self._has_matched = self._has_matched or c.is_matching()
         return [True] if c.is_matching() or self._continuation else []
 
+    def each_cases_in(self, expressions):
+        return [self.case(expr) for expr in expressions]
+
     def _break(self):
         self._break_order = True
         self._continuation = False
