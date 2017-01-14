@@ -4,9 +4,10 @@ class NoMatchingCase(Exception):
     pass
 
 class Switch:
-    def __init__(self):
+    def __init__(self, value=None):
         self._d = collections.OrderedDict()
         self._default_case = None
+        self._value = value
 
     def add_case(self, expression, executable, end_break=True):
         self._d[expression] = {"executable": executable, "break": end_break}
@@ -39,4 +40,8 @@ class Switch:
                 if key == value:
                     use_next = True
                 
+    def __enter__(self):
+        return self
 
+    def __exit__(self, type, value, traceback):
+        self.match(self._value)
