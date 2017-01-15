@@ -25,21 +25,20 @@ class Switch:
         self._default_case = None
         self._value = value
         self._has_matched = False
-        self._continuation = True
+        self._previous_case_has_matched = False
         self._break_order = False
-        self._first_case = True
 
     def case(self, expression):
         if self._break_order:
             return _NO_MATCH
         c = _Case(self, expression)
         self._has_matched |= c.is_matching()
-        if c.is_matching() or (self._continuation and not self._first_case):
+        if c.is_matching() or (not self._break_order and  self._previous_case_has_matched):
             match = [c]
+            self._previous_case_has_matched = True
         else:
             match = _NO_MATCH
-        if self._first_case:
-            self._first_case = False
+            self._previous_case_has_matched = False
         return match
 
     def case_in(self, expressions):

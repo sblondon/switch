@@ -1,5 +1,4 @@
 import unittest
-import unittest.mock
 
 import switch
 
@@ -56,6 +55,18 @@ class Test(unittest.TestCase):
                 self.fail("case d should not be called.")
 
         self.assertEqual("FGH", self.a)
+
+    def test_several_unmatched_at_begining_cases(self):
+        self.a = 0
+        with switch.Switch("a") as s:
+            for c in s.case("0"):
+                self.fail("case 0 should not be called.")
+            for c in s.case("1"):
+                self.fail("case 1 should not be called.")
+            for c in s.case("a"):
+                self.a = 1
+
+        self.assertEqual(1, self.a)
 
     def test_run_once_if_one_case_or_another_matches(self):
         self.a = 0
