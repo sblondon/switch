@@ -19,6 +19,14 @@ class Test(unittest.TestCase):
             with switch.Switch("a") as s:
                 pass
 
+    def test_can_not_call_same_case_two_times(self):
+        with self.assertRaises(switch.CaseCalledSeveralTimes):
+            with switch.Switch("a") as s:
+                for c in s.case("a"):
+                    pass
+                for c in s.case("a"):
+                    pass
+
     def test_default_case(self):
         self.a = 0
         

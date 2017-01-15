@@ -4,6 +4,10 @@ class NoMatchingCases(Exception):
     pass
 
 
+class CaseCalledSeveralTimes(Exception):
+    pass
+
+
 class _Case:
     def __init__(self, switch, value):
         self._switch = switch
@@ -27,12 +31,16 @@ class Switch:
         self._has_matched = False
         self._previous_case_has_matched = False
         self._break_order = False
+        self._passed_cases = set()
 
     def case(self, expression):
         if self._break_order:
             return _NO_MATCH
+        if expression in self._passed_cases:
+            raise CaseCalledSeveralTimes()
         c = _Case(self, expression)
         self._has_matched |= c.is_matching()
+        self._passed_cases.add(expression)
         if c.is_matching() or (not self._break_order and  self._previous_case_has_matched):
             match = [c]
             self._previous_case_has_matched = True
