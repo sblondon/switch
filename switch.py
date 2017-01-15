@@ -24,9 +24,6 @@ class Switch:
         self._continuation = True
         self._break_order = False
 
-    def add_case(self, expression, executable, end_break=True):
-        self._d[expression] = {"executable": executable, "break": end_break}
-
     def case(self, expression):
         if self._break_order:
             return []
@@ -45,13 +42,6 @@ class Switch:
         if not self._has_matched:
             self._has_matched = True
         return [True] if self._has_matched else []
-
-    def add_cases(self, expressions, executable, end_break=True):
-        for expression in expressions:
-            self.add_case(expression, executable, end_break)
-
-    def add_default_case(self, executable):
-        self._default_case = executable
 
     def _match(self, value):
         if value not in self._d:
