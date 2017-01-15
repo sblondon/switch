@@ -54,9 +54,9 @@ class Switch:
         self._continuation = False
 
     def default_case(self):
-        if not self._has_matched:
-            self._has_matched = True
-        return [True] if self._has_matched else _NO_MATCH
+        run_default = not self._has_matched
+        self._has_matched = True
+        return [True] if run_default else _NO_MATCH
                 
     def __enter__(self):
         return self

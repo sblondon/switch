@@ -29,6 +29,17 @@ class Test(unittest.TestCase):
 
         self.assertEqual(1, self.a)
 
+    def test_default_case_does_not_run_if_previous_case_matched(self):
+        self.a = 0
+        
+        with switch.Switch("a") as s:
+            for c in s.case("a"):
+                self.a = 1
+            for c in s.default_case():
+                self.a = 2
+
+        self.assertEqual(1, self.a)
+
     def test_break_or_continue(self):
         self.a = ""
         with switch.Switch("a") as s:
