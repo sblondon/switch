@@ -25,7 +25,7 @@ class Switch:
     def case(self, expression):
         if self._break_order:
             return []
-        c = _Case(self, expression) #[1] if expression == self._value else []
+        c = _Case(self, expression)
         self._has_matched = self._has_matched or c.is_matching()
         return [True] if c.is_matching() or self._continuation else []
 
