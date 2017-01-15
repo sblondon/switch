@@ -49,10 +49,6 @@ class Switch:
                 return case
         return _NO_MATCH
 
-    def _break(self):
-        self._break_order = True
-        self._continuation = False
-
     def default_case(self):
         run_default = not self._has_matched
         self._has_matched = True
