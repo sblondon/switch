@@ -3,8 +3,6 @@ import collections
 class NoMatchingCases(Exception):
     pass
 
-class _CaseDoesNotMatch(Exception):
-    pass
 
 class _Case:
     def __init__(self, switch, value):
