@@ -3,6 +3,7 @@ import unittest.mock
 
 import switch
 
+
 class Test(unittest.TestCase):
 
     def test_basic(self):
@@ -31,6 +32,8 @@ class Test(unittest.TestCase):
     def test_break_or_continue(self):
         self.a = ""
         with switch.Switch("a") as s:
+            for c in s.case("0"):
+                self.fail("case 0 should not be called.")
             for c in s.case("a"):
                 self.a += "F"
             for c in s.case("b"):
