@@ -10,6 +10,7 @@ import switch
 with switch.Switch("ham") as s:
     for case in s.case("spam"):
         #do stuff
+        case.BREAK
     for case in s.default_case():
         #do stuff if no cases matched
 ```

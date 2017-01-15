@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
                 self.a += "G"
             for c in s.case("c"):
                 self.a += "H"
-                s._break()
+                c.BREAK
             for c in s.case("d"):
                 self.fail("case d should not be called.")
 

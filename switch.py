@@ -12,7 +12,10 @@ class _Case:
     def is_matching(self):
         return self._switch._value == self._case_value
 
-_MATCH = [True]
+    def __getattr__(self, name):
+        if name == "BREAK":
+            self._switch._break_order = True
+
 _NO_MATCH = []
 
 class Switch:
@@ -30,12 +33,13 @@ class Switch:
             return []
         c = _Case(self, expression)
         self._has_matched = self._has_matched or c.is_matching()
-        return _MATCH if c.is_matching() or self._continuation else _NO_MATCH
+        return [c] if c.is_matching() or self._continuation else _NO_MATCH
 
     def case_in(self, expressions):
         for expr in expressions:
-            if self.case(expr):
-                return _MATCH
+            case = self.case(expr)
+            if case:
+                return case
         return _NO_MATCH
 
     def _break(self):
@@ -45,7 +49,7 @@ class Switch:
     def default_case(self):
         if not self._has_matched:
             self._has_matched = True
-        return _MATCH if self._has_matched else _NO_MATCH
+        return [True] if self._has_matched else _NO_MATCH
                 
     def __enter__(self):
         return self
