@@ -33,7 +33,7 @@ class Switch:
         if self._break_order:
             return _NO_MATCH
         c = _Case(self, expression)
-        self._has_matched = self._has_matched or c.is_matching()
+        self._has_matched |= c.is_matching()
         if c.is_matching() or (self._continuation and not self._first_case):
             match = [c]
         else:
