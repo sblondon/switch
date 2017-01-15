@@ -42,31 +42,10 @@ class Switch:
         if not self._has_matched:
             self._has_matched = True
         return [True] if self._has_matched else []
-
-    def _match(self, value):
-        if value not in self._d:
-            if self._default_case:
-                self._default_case()
-            elif not self._has_matched:
-                raise NoMatchingCases()
-        else:
-            self._exec_match(value)
-
-    def _exec_match(self, value):
-        match = self._d[value]
-        match["executable"]()
-        if not match["break"]:
-            use_next = False
-            for key in self._d:
-                if use_next:
-                    self._exec_match(key)
-                    break
-                if key == value:
-                    use_next = True
                 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
-        self._match(self._value)
-
+        if not self._has_matched:
+            raise NoMatchingCases()
