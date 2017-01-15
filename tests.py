@@ -43,14 +43,14 @@ class Test(unittest.TestCase):
 
         self.assertEqual("FGH", self.a)
 
-    def test_several_cases_at_same_time_with_break_disabled(self):
+    def test_run_once_if_one_case_or_another_matches(self):
         self.a = 0
 
         with switch.Switch(24) as s:
-            for c in s.each_cases_in([24, 42]):
+            for c in s.case_in([24, 24]):
                 self.a += 1
 
-        self.assertEqual(2, self.a)
+        self.assertEqual(1, self.a)
 
 
 

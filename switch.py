@@ -14,6 +14,7 @@ class _Case:
 
 
 class Switch:
+
     def __init__(self, value):
         self._d = collections.OrderedDict()
         self._default_case = None
@@ -29,8 +30,11 @@ class Switch:
         self._has_matched = self._has_matched or c.is_matching()
         return [True] if c.is_matching() or self._continuation else []
 
-    def each_cases_in(self, expressions):
-        return [self.case(expr) for expr in expressions]
+    def case_in(self, expressions):
+        for expr in expressions:
+            if self.case(expr):
+                return [True]
+        return []
 
     def _break(self):
         self._break_order = True
