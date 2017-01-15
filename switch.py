@@ -1,4 +1,4 @@
-import collections
+
 
 class NoMatchingCases(Exception):
     pass
@@ -18,10 +18,10 @@ class _Case:
 
 _NO_MATCH = []
 
+
 class Switch:
 
     def __init__(self, value):
-        self._d = collections.OrderedDict()
         self._default_case = None
         self._value = value
         self._has_matched = False
