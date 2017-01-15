@@ -8,8 +8,9 @@ Usage:
 import switch
 
 with switch.Switch("ham") as s:
-    s.add_case("spam", f)
-    s.add_case(12, f)
-    s.add_default_case(f)
+    for case in s.case("spam"):
+        #do stuff
+    for case in s.default_case():
+        #do stuff if no cases matched
 ```
 
