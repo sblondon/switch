@@ -28,7 +28,7 @@ class Switch:
     def __init__(self, value):
         self._default_case = None
         self._value = value
-        self._has_matched = False
+        self._one_case_has_matched = False
         self._previous_case_has_matched = False
         self._break_order = False
         self._passed_cases = set()
@@ -39,7 +39,7 @@ class Switch:
         if expression in self._passed_cases:
             raise CaseCalledSeveralTimes()
         c = _Case(self, expression)
-        self._has_matched |= c.is_matching()
+        self._one_case_has_matched |= c.is_matching()
         self._passed_cases.add(expression)
         if c.is_matching() or (not self._break_order and  self._previous_case_has_matched):
             match = [c]
@@ -57,14 +57,14 @@ class Switch:
         return _NO_MATCH
 
     def default_case(self):
-        run_default = not self._has_matched
-        self._has_matched = True
+        run_default = not self._one_case_has_matched
+        self._one_case_has_matched = True
         return [True] if run_default else _NO_MATCH
                 
     def __enter__(self):
         return self
 
     def __exit__(self, type, value, traceback):
-        if not self._has_matched:
+        if not self._one_case_has_matched:
             raise NoMatchingCases()
 
